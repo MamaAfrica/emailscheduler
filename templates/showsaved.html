@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>saved</title>
+    {% extends 'base.html' %}
+</head>
+<body>
+{% block content %}
+{{ saved }}<br/>
+{{ saved.body| safe }}
+{% endblock %}
+{#<button><a href="{% url "saved" %}">Back to saved</a> </button>#}
+</body>
+</html>
