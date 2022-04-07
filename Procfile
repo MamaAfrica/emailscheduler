@@ -1,1 +1,1 @@
-web: gunicorn regform.wsgi --log-file -
+web: gunicorn emailscheduler.wsgi --log-file -
