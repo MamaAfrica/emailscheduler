@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'emailscheduler',
     'ckeditor',
     'django_celery_results',
-    'celery_progress',
+    # 'celery_progress',
 ]
 
 MIDDLEWARE = [
