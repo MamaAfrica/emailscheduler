@@ -1,7 +1,7 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
-from .tasks import send_saved_email_task
+# from .tasks import send_saved_email_task
 class Compose(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="emaillist", null=True)
     To = models.EmailField()

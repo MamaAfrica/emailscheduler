@@ -3,11 +3,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .models import Compose
 from ckeditor.fields import RichTextField
-from django.template.loader import render_to_string
+# from django.template.loader import render_to_string
 # from django.forms import ValidationError
 from django.contrib.auth.models import User
-from .tasks import send_saved_email_task
-from bootstrap_datepicker_plus.widgets import DateTimePickerInput
+# from .tasks import send_saved_email_task
+# from bootstrap_datepicker_plus.widgets import DateTimePickerInput
 
 class CreateUserForm(UserCreationForm):
     username = forms.CharField(error_messages={'unique':'username is already taken'},widget=forms.TextInput(attrs={'class': "form-control", 'placeholder': "JohnDoe"}))
