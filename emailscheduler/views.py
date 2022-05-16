@@ -4,8 +4,15 @@ from .models import Compose
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from .tasks import send_saved_email_task
+from datetime import datetime,timedelta
+from django.core.paginator import Paginator
+from celery.result import AsyncResult
 
-from django.contrib.auth.forms import UserCreationForm
+from django.conf import settings
+# from django.core.mail import send_mail
+# from django.contrib.auth.models import User
+# from django.contrib.auth.forms import UserCreationForm
 
 def signup(request):
     if request.user.is_authenticated:
@@ -51,18 +58,73 @@ def emailscheduler(request):
 
 @login_required(login_url="signin")
 def compose(request):
-    form= ComposeForm()
+    form = ComposeForm()
     if request.method=="POST":
         form=ComposeForm(request.POST)
-        form.save()
-        return redirect("home")
+        if form.is_valid():
+            if 'save' in request.POST:
+                form = form.save(commit=False)
+                form.user = request.user
+                form.draft=True
+                # date_time = request.POST['date_time']
+                # form.date_time = datetime.fromisoformat(date_time)
+                form.save()
+                return redirect("saved")
+            elif 'schedule_send' in request.POST:
+                date_time=request.POST['date_time']
+                date_time=datetime.fromisoformat(date_time)
+                # date_time=datetime.strptime(date_time,'%Y-%m-%d %H:%M').timestamp()
+                print(date_time)
+                print(datetime.now())
+                date_time=date_time-datetime.now()
+                date_time=int(date_time.total_seconds())
+                print(date_time)
+                # sendtime=datetime.now()+ timedelta(seconds=date_time)
+                # print(sendtime)
+                send_saved_email_task.apply_async((form.cleaned_data['To'], form.cleaned_data['subject'], form.cleaned_data['body']), countdown=date_time)
+                # send_saved_email_task.delay(form.cleaned_data['To'], form.cleaned_data['subject'], form.cleaned_data['body'])
+                # form.send_email()
+                form=form.save(commit=False)
+                form.user = request.user
+                form.draft = False
+                date_time = request.POST['date_time']
+                form.date_time = datetime.fromisoformat(date_time)
+                form.save()
+                # form.send_email()
+                return redirect("scheduled")
+        else:
+            return render(request, 'compose.html', {"form": form})
     else:
         return render(request,'compose.html', {"form":form})
 
-def saved(request,):
-    emaillist= Compose.objects.all()
-    return render(request, 'saved.html',{"emaillist":emaillist})
+def saved(request):
+    emaillist= Compose.objects.filter(user=request.user)
+    paginator = Paginator(emaillist,5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'saved.html',{"emaillist":emaillist,'page_obj': page_obj})
 
 def showsaved(request, saved_id):
     saved = Compose.objects.get(pk=saved_id)
+    print(saved)
     return render(request,'showsaved.html', {'saved':saved})
+
+def delete(request, id):
+    instance = Compose.objects.get(id=id)
+    instance.delete()
+    return redirect('saved')
+
+def scheduled(request):
+    emaillist= Compose.objects.filter(draft=False, user=request.user).order_by('-date_time')
+    taskstatus=send_saved_email_task.AsyncResult(send_saved_email_task.request.id).state
+    print(taskstatus)
+    paginator=Paginator(emaillist,5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    print(emaillist)
+    return render(request, 'scheduled.html',{"emaillist":emaillist,'page_obj': page_obj, 'taskstatus':taskstatus})
+
+def showscheduled(request, scheduled_id):
+    scheduled = Compose.objects.get(pk=scheduled_id)
+    print(scheduled)
+    return render(request,'showscheduled.html', {'scheduled':scheduled})

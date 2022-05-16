@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>scheduled</title>
+    {% extends 'base.html' %}
+</head>
+<body>
+{% block content %}
+{{ scheduled }}<br/>
+{{ scheduled.body| safe }}
+{% endblock %}
+{#<button><a href="{% url "saved" %}">Back to saved</a> </button>#}
+</body>
+</html>

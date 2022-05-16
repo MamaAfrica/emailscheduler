@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import django_heroku
-
+from celery.schedules import crontab
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,10 +26,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-tde8mk@7j7joc*)=g42injoab6ow8ryk#t(2m=f2h3u=t)t=z)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.zoho.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'admin@mimigrace.xyz'
+EMAIL_HOST_PASSWORD = 'Mimigrace@11'
+DEFAULT_FROM_EMAIL = 'admin@mimigrace.xyz'
 
 # Application definition
 
@@ -44,6 +51,8 @@ INSTALLED_APPS = [
     'bootstrap5',
     'emailscheduler',
     'ckeditor',
+    'django_celery_results',
+    'celery_progress',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +142,22 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 django_heroku.settings(locals())
+
+#CELERY SETTINGS
+# CELERY_BROKER_URL = 'amqp://localhost'
+# CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+CELERY_BROKER_URL = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:14340'
+# CELERY_RESULT_BACKEND = 'django-db'
+# # CELERY_CACHE_BACKEND = 'django-cache'
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_TIMEZONE = 'UTC'
+# CELERY_ENABLE_UTC = True
+
+# CELERY_BEAT_SCHEDULE = {
+# 'send_saved_email_task': {
+# 'task': 'tasks.send_saved_email_task',
+# 'schedule': crontab(minute='*/2')
+# }
+# }

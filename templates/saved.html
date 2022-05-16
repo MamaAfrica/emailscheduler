@@ -6,14 +6,50 @@
     {% extends 'base.html' %}
 </head>
 <body>
+
 {% block content %}
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: brown;
+}
+</style>
 {#<p>Saved Messages</p>#}
-{% for email in emaillist %}
-    <li>
+{#{% for email in emaillist %}#}
+{% for email in page_obj %}
+    <table><td style="width: 70%">
 <a href="{% url 'showsaved' email.id %}">
-    {{ email }}</a><br/>
-    </li>
-{% endfor %}
+    {{ email }}
+</a></td>
+        <td><a class="btn btn-danger" href="{% url 'delete' email.id %}" size="10">Delete</a></td><br/>
+    </table>
+{% endfor %}<br/>
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {#    <span><button><a href="{% url "home" %}">Back to Home</a></button></span>#}
 {% endblock content %}
 </body>
