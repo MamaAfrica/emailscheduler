@@ -1,2 +1,2 @@
 web: gunicorn emailscheduler.wsgi --log-file -
-celery: celery worker -A emailscheduler -l info -c 4
+celery: celery -A emailscheduler worker -l info -c 4
