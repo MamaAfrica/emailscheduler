@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-tde8mk@7j7joc*)=g42injoab6ow8ryk#t(2m=f2h3u=t)t=z)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ec2-23-21-106-145.compute-1.amazonaws.com','*']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.zoho.com'
@@ -146,8 +146,10 @@ django_heroku.settings(locals())
 #CELERY SETTINGS
 # CELERY_BROKER_URL = 'amqps://sbvmzyqm:lZ5uSs5CS1qdVDPJyi9g3J9Z8n-ExmpR@shark.rmq.cloudamqp.com/sbvmzyqm'
 # CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
-CELERY_BROKER_URL = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:14340'
-CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_BROKER_URL = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:14340'
+CELERY_BROKER_URL = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:14339'
+# CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_BACKEND = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:14339'
 # CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'

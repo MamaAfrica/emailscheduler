@@ -8,8 +8,10 @@ from .tasks import send_saved_email_task
 from datetime import datetime,timedelta
 from django.core.paginator import Paginator
 from celery.result import AsyncResult
-
-from django.conf import settings
+import celery
+from django.http import HttpResponse
+from celery import uuid
+# from django.conf import settings
 # from django.core.mail import send_mail
 # from django.contrib.auth.models import User
 # from django.contrib.auth.forms import UserCreationForm
@@ -81,7 +83,8 @@ def compose(request):
                 print(date_time)
                 # sendtime=datetime.now()+ timedelta(seconds=date_time)
                 # print(sendtime)
-                send_saved_email_task.apply_async((form.cleaned_data['To'], form.cleaned_data['subject'], form.cleaned_data['body']), countdown=date_time)
+                taskid = uuid()
+                send_saved_email_task.apply_async((form.cleaned_data['To'], form.cleaned_data['subject'], form.cleaned_data['body']), countdown=date_time, task_id=taskid)
                 # send_saved_email_task.delay(form.cleaned_data['To'], form.cleaned_data['subject'], form.cleaned_data['body'])
                 # form.send_email()
                 form=form.save(commit=False)
@@ -90,8 +93,28 @@ def compose(request):
                 date_time = request.POST['date_time']
                 form.date_time = datetime.fromisoformat(date_time)
                 form.save()
+                # task = AsyncResult(taskid)
+                # print(task.state)
+                # if task.state == 'PENDING':
+                #     data = {
+                #         'state': task.state,
+                #         # 'progress': task.info.get("progress", 0)
+                #     }
+                # elif task.state != 'FAILURE':
+                #     data = {
+                #         'state': task.state,
+                #         # 'progress': task.info.get("progress", 0)
+                #     }
+                # else:
+                #     data = {
+                #         'state': task.state,
+                #         'error': "something went wrong",
+                #         # 'progress': task.info.get("progress", 0)
+                #     }
+                # response = HttpResponse(data)
                 # form.send_email()
                 return redirect("scheduled")
+                # return response
         else:
             return render(request, 'compose.html', {"form": form})
     else:
@@ -116,15 +139,16 @@ def delete(request, id):
 
 def scheduled(request):
     emaillist= Compose.objects.filter(draft=False, user=request.user).order_by('-date_time')
-    taskstatus=send_saved_email_task.AsyncResult(send_saved_email_task.request.id).state
-    print(taskstatus)
+    # taskstatus=send_saved_email_task.AsyncResult(send_saved_email_task.request.id).state
+    # print(taskstatus)
     paginator=Paginator(emaillist,5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     print(emaillist)
-    return render(request, 'scheduled.html',{"emaillist":emaillist,'page_obj': page_obj, 'taskstatus':taskstatus})
+    return render(request, 'scheduled.html',{"emaillist":emaillist,'page_obj': page_obj})
 
 def showscheduled(request, scheduled_id):
     scheduled = Compose.objects.get(pk=scheduled_id)
     print(scheduled)
     return render(request,'showscheduled.html', {'scheduled':scheduled})
+

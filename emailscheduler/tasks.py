@@ -13,13 +13,12 @@ from celery.result import AsyncResult
 
 logger = get_task_logger(__name__)
 
-
 @shared_task(name="send_saved_email_task")
 def send_saved_email_task(To, subject, body):
     logger.info("Super nice scheduled successfully")
-    status=send_saved_email_task.AsyncResult(send_saved_email_task.request.id).state
-    print(status)
-    return (send_saved_email(To,subject,body), status)
+    # status=send_saved_email_task.AsyncResult(send_saved_email_task.request.id).state
+    # print(status)
+    return send_saved_email(To,subject,body)
     #     #Logic to send an email here ........
 
 
