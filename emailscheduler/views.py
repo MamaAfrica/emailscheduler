@@ -76,7 +76,7 @@ def compose(request):
             elif 'schedule_send' in request.POST:
                 date_time=request.POST['date_time']
                 # print(date_time)
-                date_time=datetime.fromisoformat(date_time)
+                date_time=datetime.fromisoformat(date_time).replace(tzinfo=pytz.UTC)
                 # # date_time=datetime.strptime(date_time,'%Y-%m-%d %H:%M').timestamp()
                 current = datetime.now()
                 unix_timestamp = time.mktime(current.timetuple())
