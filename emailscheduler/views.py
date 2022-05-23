@@ -71,8 +71,6 @@ def compose(request):
                 form = form.save(commit=False)
                 form.user = request.user
                 form.draft=True
-                # date_time = request.POST['date_time']
-                # form.date_time = datetime.fromisoformat(date_time)
                 form.save()
                 return redirect("saved")
             elif 'schedule_send' in request.POST:
@@ -84,7 +82,7 @@ def compose(request):
                 unix_timestamp = time.mktime(current.timetuple())
                 date_unix = time.mktime(date_time.timetuple())
                 date_time= date_unix-unix_timestamp
-                # print(datetime.now())
+                print(date_time)
                 # date_time=date_time-datetime.now()
                 # date_time=int(date_time.total_seconds())
 
