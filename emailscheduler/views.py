@@ -8,6 +8,8 @@ from .tasks import send_saved_email_task
 from datetime import datetime,timedelta
 from django.utils import timezone
 from django.core.paginator import Paginator
+# from dateutil import *
+from dateutil.tz import *
 import pytz
 import time
 from celery.result import AsyncResult
@@ -75,14 +77,28 @@ def compose(request):
                 return redirect("saved")
             elif 'schedule_send' in request.POST:
                 date_time=request.POST['date_time']
-                # print(date_time)
-                date_time=datetime.fromisoformat(date_time).replace(tzinfo=pytz.UTC)
-                # # date_time=datetime.strptime(date_time,'%Y-%m-%d %H:%M').timestamp()
-                current = datetime.now()
+                local_zone = tz.tzlocal()
+                utc_zone = tz.tzutc()
+                date_time = datetime.fromisoformat(date_time)
+                local_date = date_time.replace(tzinfo=local_zone)
+                utc_date = local_date.astimezone(utc_zone)
+                print(utc_date)
+                current = datetime.now(tz=local_zone).astimezone(utc_zone)
+                print(current)
                 unix_timestamp = time.mktime(current.timetuple())
-                date_unix = time.mktime(date_time.timetuple())
-                date_time= date_unix-unix_timestamp
+                print(unix_timestamp)
+                date_unix_timestamp = time.mktime(utc_date.timetuple())
+                print(date_unix_timestamp)
+                date_time = date_unix_timestamp - unix_timestamp
                 print(date_time)
+                # print(date_time)
+                # date_time=datetime.fromisoformat(date_time).replace(tzinfo=pytz.UTC)
+                # # # date_time=datetime.strptime(date_time,'%Y-%m-%d %H:%M').timestamp()
+                # current = datetime.now()
+                # unix_timestamp = time.mktime(current.timetuple())
+                # date_unix = time.mktime(date_time.timetuple())
+                # date_time= date_unix-unix_timestamp
+                # print(date_time)
                 # date_time=date_time-datetime.now()
                 # date_time=int(date_time.total_seconds())
 

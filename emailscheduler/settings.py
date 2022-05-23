@@ -125,7 +125,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -154,7 +154,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
-CELERY_ENABLE_UTC = False
+CELERY_ENABLE_UTC = True
 
 # CELERY_BEAT_SCHEDULE = {
 # 'send_saved_email_task': {
