@@ -8,8 +8,8 @@ from .tasks import send_saved_email_task
 from datetime import datetime,timedelta
 from django.utils import timezone
 from django.core.paginator import Paginator
-# from dateutil import *
-from dateutil.tz import *
+# import dateutil
+from dateutil import tz
 import pytz
 import time
 from celery.result import AsyncResult
