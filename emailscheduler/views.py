@@ -9,6 +9,7 @@ from datetime import datetime,timedelta
 from django.utils import timezone
 from django.core.paginator import Paginator
 import pytz
+import time
 from celery.result import AsyncResult
 import celery
 from django.http import HttpResponse
@@ -77,18 +78,20 @@ def compose(request):
             elif 'schedule_send' in request.POST:
                 date_time=request.POST['date_time']
                 # print(date_time)
-                # date_time=datetime.fromisoformat(date_time)
+                date_time=datetime.fromisoformat(date_time)
                 # # date_time=datetime.strptime(date_time,'%Y-%m-%d %H:%M').timestamp()
-                # print(date_time)
+                current = datetime.now()
+                unix_timestamp = time.mktime(current.timetuple())
+                date_unix = time.mktime(date_time.timetuple())
+                date_time= date_unix-unix_timestamp
                 # print(datetime.now())
                 # date_time=date_time-datetime.now()
                 # date_time=int(date_time.total_seconds())
-                date_time = datetime.fromisoformat(date_time)
-                print(date_time)
-                date_time = date_time.astimezone(pytz.timezone('UTC'))
-                current = datetime.now(pytz.timezone('UTC'))
-                date_time=abs((date_time - current).total_seconds())
-                print(date_time)
+
+                # date_time = date_time.astimezone(pytz.timezone('UTC'))
+                # current = datetime.now(pytz.timezone('UTC'))
+                # date_time=abs((date_time - current).total_seconds())
+                # print(date_time)
                 # sendtime=datetime.now()+ timedelta(seconds=date_time)
                 # print(sendtime)
                 taskid = uuid()
