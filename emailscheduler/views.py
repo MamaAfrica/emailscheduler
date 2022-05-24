@@ -77,18 +77,18 @@ def compose(request):
                 return redirect("saved")
             elif 'schedule_send' in request.POST:
                 date_time=request.POST['date_time']
+                print(date_time)
                 local_zone = tz.tzlocal()
                 utc_zone = tz.tzutc()
                 date_time = datetime.fromisoformat(date_time)
                 local_date = date_time.replace(tzinfo=local_zone)
+                print(local_date)
                 utc_date = local_date.astimezone(utc_zone)
                 print(utc_date)
                 current = datetime.now(tz=local_zone).astimezone(utc_zone)
                 print(current)
                 unix_timestamp = time.mktime(current.timetuple())
-                print(unix_timestamp)
                 date_unix_timestamp = time.mktime(utc_date.timetuple())
-                print(date_unix_timestamp)
                 date_time = date_unix_timestamp - unix_timestamp
                 print(date_time)
                 # print(date_time)
@@ -115,8 +115,9 @@ def compose(request):
                 form=form.save(commit=False)
                 form.user = request.user
                 form.draft = False
-                date_time = request.POST['date_time']
-                form.date_time = datetime.fromisoformat(date_time)
+                # date_time = request.POST['date_time']
+                # form.date_time = datetime.fromisoformat(date_time)
+                form.date_time = utc_date
                 form.save()
                 # task = AsyncResult(taskid)
                 # print(task.state)
