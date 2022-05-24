@@ -21,7 +21,6 @@ from . import views
 
 
 urlpatterns = [
-    path('tz_detect/', include('tz_detect.urls')),
     path('admin/', admin.site.urls),
     path("", views.emailscheduler, name="home"),
     path("signup/", views.signup, name="signup"),
@@ -30,6 +29,7 @@ urlpatterns = [
     path("compose/", views.compose, name="compose"),
     path("saved/", views.saved, name="saved"),
     path("showsaved/<saved_id>/", views.showsaved, name="showsaved"),
+    path('tz_detect/', include('tz_detect.urls')),
     path("delete/<id>/", views.delete, name="delete"),
     path("scheduled/", views.scheduled, name="scheduled"),
     path("showsaved/<scheduled_id>/", views.showscheduled, name="showscheduled"),

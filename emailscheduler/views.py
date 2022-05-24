@@ -5,21 +5,17 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .tasks import send_saved_email_task
-from datetime import datetime,timedelta
-from django.utils import timezone
+from datetime import datetime
 from django.core.paginator import Paginator
 # import dateutil
 from dateutil import tz
-import pytz
+# import pytz
 import time
-from celery.result import AsyncResult
-import celery
-from django.http import HttpResponse
+# from celery.result import AsyncResult
+# import celery
+
 from celery import uuid
-# from django.conf import settings
-# from django.core.mail import send_mail
-# from django.contrib.auth.models import User
-# from django.contrib.auth.forms import UserCreationForm
+
 
 def signup(request):
     if request.user.is_authenticated:
@@ -33,8 +29,6 @@ def signup(request):
                 user = form.cleaned_data['username']
                 messages.success(request, "account successfully created for "+ user)
                 return redirect("signin")
-            # else:
-            #     raise ValueError("username already taken")
         context = {'form':form}
         return render(request, 'signup.html', context)
 
@@ -91,56 +85,15 @@ def compose(request):
                 date_unix_timestamp = time.mktime(utc_date.timetuple())
                 date_time = date_unix_timestamp - unix_timestamp
                 print(date_time)
-                # print(date_time)
-                # date_time=datetime.fromisoformat(date_time).replace(tzinfo=pytz.UTC)
-                # # # date_time=datetime.strptime(date_time,'%Y-%m-%d %H:%M').timestamp()
-                # current = datetime.now()
-                # unix_timestamp = time.mktime(current.timetuple())
-                # date_unix = time.mktime(date_time.timetuple())
-                # date_time= date_unix-unix_timestamp
-                # print(date_time)
-                # date_time=date_time-datetime.now()
-                # date_time=int(date_time.total_seconds())
-
-                # date_time = date_time.astimezone(pytz.timezone('UTC'))
-                # current = datetime.now(pytz.timezone('UTC'))
-                # date_time=abs((date_time - current).total_seconds())
-                # print(date_time)
-                # sendtime=datetime.now()+ timedelta(seconds=date_time)
-                # print(sendtime)
                 taskid = uuid()
                 send_saved_email_task.apply_async((form.cleaned_data['To'], form.cleaned_data['subject'], form.cleaned_data['body']), countdown=date_time, task_id=taskid)
-                # send_saved_email_task.delay(form.cleaned_data['To'], form.cleaned_data['subject'], form.cleaned_data['body'])
                 # form.send_email()
                 form=form.save(commit=False)
                 form.user = request.user
                 form.draft = False
-                # date_time = request.POST['date_time']
-                # form.date_time = datetime.fromisoformat(date_time)
                 form.date_time = utc_date
                 form.save()
-                # task = AsyncResult(taskid)
-                # print(task.state)
-                # if task.state == 'PENDING':
-                #     data = {
-                #         'state': task.state,
-                #         # 'progress': task.info.get("progress", 0)
-                #     }
-                # elif task.state != 'FAILURE':
-                #     data = {
-                #         'state': task.state,
-                #         # 'progress': task.info.get("progress", 0)
-                #     }
-                # else:
-                #     data = {
-                #         'state': task.state,
-                #         'error': "something went wrong",
-                #         # 'progress': task.info.get("progress", 0)
-                #     }
-                # response = HttpResponse(data)
-                # form.send_email()
                 return redirect("scheduled")
-                # return response
         else:
             return render(request, 'compose.html', {"form": form})
     else:
@@ -165,8 +118,6 @@ def delete(request, id):
 
 def scheduled(request):
     emaillist= Compose.objects.filter(draft=False, user=request.user).order_by('-date_time')
-    # taskstatus=send_saved_email_task.AsyncResult(send_saved_email_task.request.id).state
-    # print(taskstatus)
     paginator=Paginator(emaillist,5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

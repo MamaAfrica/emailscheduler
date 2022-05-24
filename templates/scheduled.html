@@ -7,7 +7,6 @@
 </head>
 <body>
 {% block content %}
-{#<p>Saved Messages</p>#}
 {% for email in page_obj %}
     <li>
 <a href="{% url 'showscheduled' email.id %}">

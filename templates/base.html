@@ -9,20 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-      <link rel="stylesheet" href="{%  static 'spec/components/sidebar.scss' %}">
+{#      <link rel="stylesheet" href="{%  static 'spec/components/sidebar.scss' %}">#}
 		<link rel="stylesheet" href="{%  static 'css/style.css' %}">
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
-{#<script>#}
-{#    function update() {#}
-{#        var dateInObj = document.getElementById('date_time');#}
-{#        var dateOut = document.getElementById("dateOut");#}
-{##}
-{#        var date = new Date(dateInObj.value);#}
-{##}
-{#        dateOut.innerHTML = date.toDateString();#}
-{##}
-{#        }#}
-{#</script>#}
 </head>
 <body>
 		<div class="wrapper d-flex align-items-stretch">
@@ -37,14 +26,6 @@
 	          <li class="drop" id="/compose/">
 	              <a href="{% url "compose" %}">Compose</a>
 	          </li>
-{#	          <li>#}
-{#              <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>#}
-{#              <ul class="collapse list-unstyled" id="pageSubmenu">#}
-{#                <li>#}
-{#                    <a href="#">Page 1</a>#}
-{#                </li>#}
-{#              </ul>#}
-{#	          </li>#}
 	          <li class="drop" id="/saved/">
               <a href="{% url "saved" %}">Saved</a>
 	          </li>
@@ -95,11 +76,10 @@ btnContainer.className+=" active"
 </script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
         <script src="{% static 'js/css/style.css' %}"></script>
-    <script src="{% static 'js/popper.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+{#    <script src="{% static 'js/popper.js' %}"></script>#}
+{#    <script src="{% static 'js/bootstrap.min.js' %}"></script>#}
     <script src="{% static 'js/main.js' %}"></script>
-{% load tz_detect %}
-{% tz_detect %}
+
   </body>
 
 </html>

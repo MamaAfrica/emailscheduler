@@ -14,11 +14,10 @@ from pathlib import Path
 import django_heroku
 from celery.schedules import crontab
 import django
-
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -29,7 +28,7 @@ SECRET_KEY = 'django-insecure-tde8mk@7j7joc*)=g42injoab6ow8ryk#t(2m=f2h3u=t)t=z)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['ec2-23-21-106-145.compute-1.amazonaws.com','*']
+ALLOWED_HOSTS = ['localhost','ec2-23-21-106-145.compute-1.amazonaws.com']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.zoho.com'
@@ -54,7 +53,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'django_celery_results',
     # 'celery_progress',
-    'tz_detect',
+    # 'tz_detect',
 ]
 
 MIDDLEWARE = [
@@ -65,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'tz_detect.middleware.TimezoneMiddleware',
+    # 'tz_detect.middleware.TimezoneMiddleware',
 ]
 
 ROOT_URLCONF = 'emailscheduler.urls'
@@ -88,7 +87,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'emailscheduler.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -98,7 +96,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -118,7 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -130,24 +126,31 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-
+STATIC_URL = '/static/'
+# MEDIA_URL = '/media/'
+#
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# STATIC_ROOT = "static"
+# if DEBUG:
+#     STATICFILES_DIRS = (
+#         os.path.join(BASE_DIR, 'static'),
+#     )
+# else:
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# WHITENOISE_MANIFEST_STRICT = False
+# STATICFILES_STORAGE = 'emailscheduler.storage.WhiteNoiseStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = "C:/Users/HP/Desktop/EmailScheduler/emailscheduler/static/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-django_heroku.settings(locals())
 
-#CELERY SETTINGS
+# CELERY SETTINGS
 # CELERY_BROKER_URL = 'amqps://sbvmzyqm:lZ5uSs5CS1qdVDPJyi9g3J9Z8n-ExmpR@shark.rmq.cloudamqp.com/sbvmzyqm'
 # CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 CELERY_BROKER_URL = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:14339'
@@ -160,9 +163,37 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True
 
-# CELERY_BEAT_SCHEDULE = {
-# 'send_saved_email_task': {
-# 'task': 'tasks.send_saved_email_task',
-# 'schedule': crontab(minute='*/2')
-# }
-# }
+django_heroku.settings(locals())
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'C:/Users/HP/Desktop/EmailScheduler/mysite.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'MYAPP': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
