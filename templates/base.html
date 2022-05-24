@@ -87,7 +87,8 @@ btnContainer.className+=" active"
     <script src="{% static 'js/popper.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
-
+{% load tz_detect %}
+{% tz_detect %}
   </body>
 
 </html>

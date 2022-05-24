@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import django_heroku
 from celery.schedules import crontab
+import django
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'django_celery_results',
     # 'celery_progress',
+    'tz_detect',
 ]
 
 MIDDLEWARE = [
@@ -64,6 +66,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+MIDDLEWARE += (
+    'tz_detect.middleware.TimezoneMiddleware',
+)
 
 ROOT_URLCONF = 'emailscheduler.urls'
 
