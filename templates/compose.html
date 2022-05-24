@@ -13,18 +13,18 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
       <link rel="stylesheet" href="{%  static 'spec/components/sidebar.scss' %}">
 		<link rel="stylesheet" href="{%  static 'css/style.css' %}">
-      <link rel="stylesheet" href="{% static 'css/main.css' %}">
-<script>
-    function update() {
-        var dateInObj = document.getElementById('date_time');
-        var dateOut = document.getElementById("dateOut");
-
-        var date = new Date(dateInObj.value);
-
-        dateOut.innerHTML = date.toDateString();
-
-        }
-</script>
+{#      <link rel="stylesheet" href="{% static 'css/main.css' %}">#}
+{#<script>#}
+{#    function update() {#}
+{#        var dateInObj = document.getElementById('date_time');#}
+{#        var dateOut = document.getElementById("dateOut");#}
+{##}
+{#        var date = new Date(dateInObj.value);#}
+{##}
+{#        dateOut.innerHTML = date.toDateString();#}
+{##}
+{#        }#}
+{#</script>#}
 </head>
 <body>
 {#		<div class="wrapper d-flex align-items-stretch">#}
@@ -102,7 +102,7 @@
             {{ form.as_p }}
             <button name="save">Save</button>
             <label >Seclect date and time
-                <input type="datetime-local" name="date_time" id="dateInObj">
+                <input type="datetime-local" name="date_time">
 {#                <select name="timezone" id="timezone">#}
 {#                    <option value="Africa/Lagos">Nigeria</option>#}
 {#    <option value="Pacific/Kwajalein">Eniwetok, Kwajalein</option>#}
@@ -117,7 +117,7 @@
 {#        <script>console.log('dateInObj');</script>#}
         </form>
 
-{% tz_detect %}<br/>
+{% tz_detect %}
 
 {#<label>Date Out:</label>#}
 {#<h4 id="dateOut"></h4>#}
