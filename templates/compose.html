@@ -3,9 +3,9 @@
 
 <head>
     {% extends 'base.html' %}
-{% load tz_detect %}
       {% load static %}
       {% load bootstrap5 %}
+    {% load tz_detect %}
   	{% block title %}<title>Compose</title>{% endblock %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -17,7 +17,6 @@
 <script>
     function update() {
         var dateInObj = document.getElementById('date_time');
-        console.log(dateInObj);
         var dateOut = document.getElementById("dateOut");
 
         var date = new Date(dateInObj.value);
