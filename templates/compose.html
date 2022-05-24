@@ -3,6 +3,7 @@
 
 <head>
     {% extends 'base.html' %}
+{% load tz_detect %}
       {% load static %}
       {% load bootstrap5 %}
   	{% block title %}<title>Compose</title>{% endblock %}
@@ -91,10 +92,20 @@
             <button name="save">Save</button>
             <label >Seclect date and time
                 <input type="datetime-local" name="date_time">
+{#                <select name="timezone" id="timezone">#}
+{#                    <option value="Africa/Lagos">Nigeria</option>#}
+{#    <option value="Pacific/Kwajalein">Eniwetok, Kwajalein</option>#}
+{#    <option value="Pacific/Midway">Midway Island, Samoa</option>#}
+{#    <option value="Pacific/Honolulu">Hawaii</option>#}
+{#    <option value="Pacific/Marquesas">Taiohae</option>#}
+{#    <!-- and so on -->#}
+{#</select>#}
+                It is {% now "jS F Y H:i" %}
             </label>
             <button name="schedule_send">Schedule send</button>
         </form>
             {% endblock %}
+{% tz_detect %}
 {#            </div>#}
 {#        </div>#}
 {##}

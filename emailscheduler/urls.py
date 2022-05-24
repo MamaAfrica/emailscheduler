@@ -21,6 +21,7 @@ from . import views
 
 
 urlpatterns = [
+    path('tz_detect/', include('tz_detect.urls')),
     path('admin/', admin.site.urls),
     path("", views.emailscheduler, name="home"),
     path("signup/", views.signup, name="signup"),
@@ -33,6 +34,3 @@ urlpatterns = [
     path("scheduled/", views.scheduled, name="scheduled"),
     path("showsaved/<scheduled_id>/", views.showscheduled, name="showscheduled"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += [
-    path('tz_detect/', include('tz_detect.urls')),
-]
