@@ -20,9 +20,9 @@
         <form method="POST">{% csrf_token %}
             {{ form.media }}
             {{ form.as_p }}
-            <button name="save">Save</button>
-            <label >Seclect date and time
-                <input type="datetime-local" name="date_time">
+            <button class="btn-outline-success" name="save">Save</button><br/>
+            <label>Seclect date and time
+                <input type="datetime-local" name="date_time" required>
 {#                <select name="timezone" id="timezone">#}
 {#                    <option value="Africa/Lagos">Nigeria</option>#}
 {#    <option value="Pacific/Kwajalein">Eniwetok, Kwajalein</option>#}
@@ -32,8 +32,8 @@
 {#    <!-- and so on -->#}
 {#</select>#}
             </label>
-            <button name="schedule_send">Schedule send</button>
-        </form>
+            <button class="btn-success" name="schedule_send">Schedule send</button>
+             </form>
 
 {% endblock %}
 

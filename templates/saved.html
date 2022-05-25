@@ -26,7 +26,7 @@ tr:nth-child(even) {
 {#<p>Saved Messages</p>#}
 {#{% for email in emaillist %}#}
 {% for email in page_obj %}
-    <table><td style="width: 70%">
+    <table><td style="width: 50%">
 <a href="{% url 'showsaved' email.id %}">
     {{ email }}
 </a></td>
