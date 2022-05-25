@@ -30,7 +30,7 @@ tr:nth-child(even) {
 <a href="{% url 'showsaved' email.id %}">
     {{ email }}
 </a></td>
-        <td><a class="btn btn-danger" href="{% url 'delete' email.id %}" size="10">Delete</a></td><br/>
+        <td><a class="btn btn-danger" href="{% url 'deletesaved' email.id %}" size="10">Delete</a></td><br/>
     </table>
 {% endfor %}<br/>
     <div class="pagination">

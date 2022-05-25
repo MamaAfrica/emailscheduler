@@ -30,7 +30,8 @@ urlpatterns = [
     path("saved/", views.saved, name="saved"),
     path("showsaved/<saved_id>/", views.showsaved, name="showsaved"),
     path('tz_detect/', include('tz_detect.urls')),
-    path("delete/<id>/", views.delete, name="delete"),
+    path("deletesaved/<id>/", views.deletesaved, name="deletesaved"),
+    path("delete/<id>/", views.deletescheduled, name="delete"),
     path("scheduled/", views.scheduled, name="scheduled"),
     path("showsaved/<scheduled_id>/", views.showscheduled, name="showscheduled"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

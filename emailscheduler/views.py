@@ -111,17 +111,20 @@ def showsaved(request, saved_id):
     print(saved)
     return render(request,'showsaved.html', {'saved':saved})
 
-def delete(request, id):
+def deletesaved(request, id):
     instance = Compose.objects.get(id=id)
     instance.delete()
     return redirect('saved')
+def deletescheduled(request, id):
+    instance = Compose.objects.get(id=id)
+    instance.delete()
+    return redirect('scheduled')
 
 def scheduled(request):
     emaillist= Compose.objects.filter(draft=False, user=request.user).order_by('-date_time')
     paginator=Paginator(emaillist,5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    print(emaillist)
     return render(request, 'scheduled.html',{"emaillist":emaillist,'page_obj': page_obj})
 
 def showscheduled(request, scheduled_id):
