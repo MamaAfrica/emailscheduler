@@ -100,7 +100,7 @@ def compose(request):
         return render(request,'compose.html', {"form":form})
 
 def saved(request):
-    emaillist= Compose.objects.filter(user=request.user)
+    emaillist= Compose.objects.filter(draft=True, user=request.user)
     paginator = Paginator(emaillist,5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -108,7 +108,6 @@ def saved(request):
 
 def showsaved(request, saved_id):
     saved = Compose.objects.get(pk=saved_id)
-    print(saved)
     return render(request,'showsaved.html', {'saved':saved})
 
 def deletesaved(request, id):
@@ -129,6 +128,5 @@ def scheduled(request):
 
 def showscheduled(request, scheduled_id):
     scheduled = Compose.objects.get(pk=scheduled_id)
-    print(scheduled)
     return render(request,'showscheduled.html', {'scheduled':scheduled})
 
