@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+from decouple import config
+import dj_database_url
 from pathlib import Path
 import django_heroku
 from celery.schedules import crontab
@@ -97,6 +98,7 @@ DATABASES = {
     }
 }
 
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -155,13 +157,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
 CELERY_BROKER_URL = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:9219'
 # CELERY_RESULT_BACKEND = 'django-db'
-CELERY_RESULT_BACKEND = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:9219'
+# CELERY_RESULT_BACKEND = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:9219'
+
 # CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True
+
+if not DEBUG:
+    prod_db = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(prod_db)
+
+    CELERY_RESULT_BACKEND = config("REDIS_URL")
+    CELERY_BROKER_URL = config("REDIS_URL")
+
 
 django_heroku.settings(locals())
 
