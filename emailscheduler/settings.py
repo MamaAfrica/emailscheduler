@@ -155,7 +155,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CELERY SETTINGS
 # CELERY_BROKER_URL = 'amqps://sbvmzyqm:lZ5uSs5CS1qdVDPJyi9g3J9Z8n-ExmpR@shark.rmq.cloudamqp.com/sbvmzyqm'
 # CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
-CELERY_BROKER_URL = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:9219'
+CELERY_BROKER_URL = 'redis://:pcad6a531caeaac821d0a22afb509db080ed91f6469696d4d3394cf70e5147be7@ec2-54-145-40-238.compute-1.amazonaws.com:24190'
+# 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:9219'
 # CELERY_RESULT_BACKEND = 'django-db'
 # CELERY_RESULT_BACKEND = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:9219'
 
