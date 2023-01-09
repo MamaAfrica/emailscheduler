@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-tde8mk@7j7joc*)=g42injoab6ow8ryk#t(2m=f2h3u=t)t=z)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','ec2-23-21-106-145.compute-1.amazonaws.com','mailschedulerbot.herokuapp.com','mimigrace.xyz','mailbot.mimigrace.xyz']
+ALLOWED_HOSTS = ['localhost','ec2-54-145-40-238.compute-1.amazonaws.com','ec2-3-225-213-67.compute-1.amazonaws.com','mailschedulerbot.herokuapp.com','mimigrace.xyz','mailbot.mimigrace.xyz']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.zoho.com'
