@@ -171,8 +171,8 @@ if not DEBUG:
     prod_db = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(prod_db)
 
-    CELERY_RESULT_BACKEND = config("REDIS_URL")
-    CELERY_BROKER_URL = config("REDIS_URL")
+    #CELERY_RESULT_BACKEND = config("REDIS_URL")
+    #CELERY_BROKER_URL = config("REDIS_URL")
 
 
 django_heroku.settings(locals())
