@@ -16,3 +16,4 @@ python manage.py collectstatic --noinput
 #Run the Django application
 python manage.py runserver 0.0.0.0:8000
 
+sudo supervisorctl start emailbotapp
