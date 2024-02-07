@@ -1,51 +1,51 @@
 pipeline{
-    // agent {
-    //     node{
-    //         label 'docker-agent-node'
-    //     }
-    // }
-    // stages{
-    //     stage('Add .env'){
-    //         steps{
-    //         sh ''' 
-    //         rm -rf *.tar.gz
-    //         echo PASSWORD=${earnhivePASSWORD} > .env
-    //         echo NAME=${earnhiveNAME} >> .env
-    //         echo DB=${earnhiveDB} >> .env
-    //         echo CLOUDINARY_CLOUD_NAME=${earnhiveCLOUDINARY_CLOUD_NAME} >> .env
-    //         echo CLOUDINARY_KEY=${earnhiveCLOUDINARY_KEY} >> .env
-    //         echo CLOUDINARY_SECRET=${earnhiveCLOUDINARY_SECRET} >> .env
-    //         '''
-    //         }
-    //     }
-    //     stage('Package'){
-    //         steps{
-    //             sh '''
-    //             tar czf earnhive-$BUILD_NUMBER.tar.gz component model .env pages public styles utils jsconfig.json next.config.js package-lock.json package.json deploy.sh
-    //             '''
-    //         }
-    //     }
-    //     stage('Deploy'){
-    //         steps{
-    //             sshPublisher(
-    //                 publishers: [
-    //                 sshPublisherDesc(
-    //                 configName: 'earnhiveserver', 
-    //                 transfers: [sshTransfer(
-    //                 cleanRemote: false, excludes: '', 
-    //                 execCommand: '''sudo rm -rf /var/www/earnhive/earnhive-*.tar.gz 
-    //                 sudo mv /home/ubuntu/earnhive-*.tar.gz /var/www/earnhive/;
-    //                 cd /var/www/earnhive/;
-    //                 sudo tar -xf earnhive-*.tar.gz;
-    //                 sudo chmod +x deploy.sh;
-    //                 ./deploy.sh; 
-    //                 ''', 
-    //                 execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, 
-    //                 patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', 
-    //                 sourceFiles: '**/*.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)
-    //                 ]
-    //             )
-    //         }
-    //     }
-    // }
+    agent {
+        node{
+            label 'docker-agent-node'
+        }
+    }
+    stages{
+        stage('Add .env'){
+            steps{
+            sh ''' 
+            rm -rf *.tar.gz
+            echo SECRET_KEY=${emailbotSECRET_KEY} > .env
+            echo EMAIL_HOST=${EMAIL_HOST} >> .env
+            echo EMAIL_HOST_USER=${EMAIL_HOST_USER} >> .env
+            echo EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD} >> .env
+            echo DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL} >> .env
+            echo CELERY_BROKER_URL=${CELERY_BROKER_URL} >> .env
+            '''
+            }
+        }
+        stage('Package'){
+            steps{
+                sh '''
+                tar czf emailbot-$BUILD_NUMBER.tar.gz component model .env emailscheduler static staticfiles templates Procfile celerybeat-schedule.bak celerybeat-schedule.dat celerybeat-schedule.dir db.sqlite3 manage.py requirements.txt runtime.txt deploy.sh
+                '''
+            }
+        }
+        stage('Deploy'){
+            steps{
+                sshPublisher(
+                    publishers: [
+                    sshPublisherDesc(
+                    configName: 'portfolio', 
+                    transfers: [sshTransfer(
+                    cleanRemote: false, excludes: '', 
+                    execCommand: '''sudo rm -rf /var/www/emailbot/emailbot-*.tar.gz 
+                    sudo mv /home/ubuntu/emailbot-*.tar.gz /var/www/emailbot/;
+                    cd /var/www/emailbot/;
+                    sudo tar -xf emailbot-*.tar.gz;
+                    sudo chmod +x deploy.sh;
+                    ./deploy.sh; 
+                    ''', 
+                    execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, 
+                    patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', 
+                    sourceFiles: '**/*.gz')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true)
+                    ]
+                )
+            }
+        }
+    }
 }

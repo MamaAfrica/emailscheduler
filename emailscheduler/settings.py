@@ -16,7 +16,10 @@ import django_heroku
 from celery.schedules import crontab
 import django
 import os
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,20 +27,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-tde8mk@7j7joc*)=g42injoab6ow8ryk#t(2m=f2h3u=t)t=z)'
-
+SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ['localhost','ec2-54-145-40-238.compute-1.amazonaws.com','ec2-3-225-213-67.compute-1.amazonaws.com','mailschedulerbot.herokuapp.com','mimigrace.xyz','mailbot.mimigrace.xyz']
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.zoho.com'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'admin@mimigrace.xyz'
-EMAIL_HOST_PASSWORD = 'Mimigrace@11'
-DEFAULT_FROM_EMAIL = 'admin@mimigrace.xyz'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 
 # Application definition
 
@@ -155,7 +157,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CELERY SETTINGS
 # CELERY_BROKER_URL = 'amqps://sbvmzyqm:lZ5uSs5CS1qdVDPJyi9g3J9Z8n-ExmpR@shark.rmq.cloudamqp.com/sbvmzyqm'
 # CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672//'
-CELERY_BROKER_URL = 'redis://:pcad6a531caeaac821d0a22afb509db080ed91f6469696d4d3394cf70e5147be7@ec2-54-145-40-238.compute-1.amazonaws.com:24190'
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 # 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:9219'
 # CELERY_RESULT_BACKEND = 'django-db'
 # CELERY_RESULT_BACKEND = 'redis://:pb5f0320b5e776373194182c60862bc79709c2afe6906420bfcfc3000999ddf9e@ec2-23-21-106-145.compute-1.amazonaws.com:9219'
