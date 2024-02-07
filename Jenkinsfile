@@ -21,7 +21,7 @@ pipeline{
         stage('Package'){
             steps{
                 sh '''
-                tar czf emailbot-$BUILD_NUMBER.tar.gz component model .env emailscheduler static staticfiles templates Procfile celerybeat-schedule.bak celerybeat-schedule.dat celerybeat-schedule.dir db.sqlite3 manage.py requirements.txt runtime.txt deploy.sh
+                tar czf emailbot-$BUILD_NUMBER.tar.gz .env emailscheduler static staticfiles templates Procfile celerybeat-schedule.bak celerybeat-schedule.dat celerybeat-schedule.dir db.sqlite3 manage.py requirements.txt runtime.txt deploy.sh
                 '''
             }
         }
